@@ -84,6 +84,13 @@ public class Shop
 				break;
 				
 			case Menu.MENU_OPTION_VEHICLES_UNDER_REPAIR:
+				if (vehicles.length >= 1) {
+					for (int i = 0; i < vehicles.length; i++) {
+						System.out.println(vehicles[i].type() + " is under repair.");
+					}
+				} else {
+					System.out.println("No vehicles under repair.");
+				}
 				break;
 				
 			case Menu.MENU_OPTION_TOTAL_VEHICLES_LEFT_TO_REPAIR: 
