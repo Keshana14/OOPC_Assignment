@@ -74,8 +74,8 @@ public class Shop
 		switch(action)
 		{
 			case Menu.MENU_OPTION_AVAILABLE_MECHANICS:
-				if (mechanics[].length() >= 1) {
-					for(i = 0; mechanics[].length() > 1; i++) {
+				if (mechanics[i].length() >= 1) {
+					for(i = 0; mechanics[i].length() > 1; i++) {
 						System.out.println(mechanics[i].name());
 						System.out.println(mechanics[i].id());
 						System.out.println(mechanics[i].experience());
