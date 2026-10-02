@@ -74,13 +74,23 @@ public class Shop
 		switch(action)
 		{
 			case Menu.MENU_OPTION_AVAILABLE_MECHANICS:
-				if (mechanics[i].length() >= 1) {
-					for(i = 0; mechanics[i].length() > 1; i++) {
-						System.out.println(mechanics[i].name());
-						System.out.println(mechanics[i].id());
-						System.out.println(mechanics[i].experience());
+				boolean foundMechanic = false;
+
+				for (int i = 0; i < mechanics.length; i++){
+					if (!mechanics[i].name().equals("")){
+						foundMechanic = true;
+
+						System.out.println("Name: " + mechanics[i].name());
+						System.out.println("ID: " + mechanics[i].id());
+						System.out.println("Experience: " + mechanics[i].experience());
+						System.out.println();
 					}
 				}
+
+				if (!foundMechanic){
+					System.out.println("No mechanics are available.");
+				}
+
 				break;
 				
 			case Menu.MENU_OPTION_VEHICLES_UNDER_REPAIR:
