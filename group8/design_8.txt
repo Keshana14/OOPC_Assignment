@@ -74,62 +74,6 @@ end
 #exclude
 
 @ ******************** Add your design below. ********************
-class Shop
-! Represents the repair shop. !
-! Manages mechanics, vehicles, jobs, and waiting lists. !
-
-uses
-   Mechanic with 1 to * label employs ! Mechanics employed by the shop. !;
-   Vehicle with 0 to * label repairs ! Vehicles to be repaired. !;
-   Job with 0 to * label records ! Completed and active jobs. !;
-   Waitinglist with 1 label maintains ! Vehicles waiting for repair. !;
-   Display with 1 label uses ! Output information to the user. !;
-end 
-
-services
-     setup  ! Initialize mechanics and vehicles. !;
-     run    ! Run the application. !;
-     simulate ! Runs the simulation. !;
-     assignMechanic ! Assign a mechanic to a vehicle. !;
-     createJob  ! Creates a repair job. !;
-end
-
-@ ---------------------------------------------------------
-
-class Mechanic
-! Represents a mechanic employed by the shop !
-
-uses
-    Job with 0 * label performs  ! Repair work assigned to mechanic. !;
-end
-
-services 
-    name  ! Return mechanic name. !;
-    id    ! Return mechanic id.   !;
-    experience  ! Return experience level. !;
-    assignJob   ! Assign repair job.  !;
-    completeJob  ! Complete repair job.  !;
-end
-
-@ ----------------------------------------------------------
-
-class Vehicle
-!  Represents a vehicle that needs repairs.  !
-
-uses
-    Damage with 1 label damagedBy  ! Type of damage sustained.  !;
-end
-
-services
-        company  ! Return company name. !;
-        model    ! Return model name. !;
-        type     ! Return type of vehicle. !;
-        damage   ! Return damage type.     !;
-        calculateCost ! Calculate repair cost. !;
-        calculateTime ! Calculate repair time.  !;
-end
-
-@ -------------------------------------------------------------
 
 class Job
 ! Represents a repair record. !
@@ -152,7 +96,7 @@ class WaitingList
 ! Stores vehicles waiting on an available mechanic. !
 
 uses
-    Vehicles with 0 to * label contains ! Waiting vehicles. !;
+    Vehicle with 0 to * label contains ! Waiting vehicles. !;
 end
 
 services
@@ -177,8 +121,6 @@ end
 class PotholeDamage
 ! Damage caused by pothole. !
 
-inherits Damage;
-
 services
        repairCost ! Cost for small, medium, or large potholes. !;
        repairTime  ! Time needed for pothole repair. !;
@@ -188,8 +130,6 @@ end
 
 class CollisionDamage
 ! Damage caused by vehicle collisions. !
-
-inherits Damage;
 
 services
         repairCost ! Cost for bumper, roof, mirror, and door damage. !;
@@ -201,8 +141,6 @@ end
 class WeatherDamage
 ! Damage caused by the weather elements. !
 
-inherits Damage;
-
 services
         repairCost  ! Cost for wind, flood, or fire damage. !;
         repairTime  ! Adjust repair time using multiplier. !;
@@ -210,18 +148,6 @@ end
 
 @ ----------------------------------------------------------------------
 
-class Display
-! Handles all user output. !
-
-services
-       outputIterationNumber ! Display simulation iteration. !;
-       outputAddedToWaitingList ! Display waiting list message. !;
-       outputAssignedToMechcanic ! Display assignment message. !;
-       outputRepairedByMechanic  ! Display completion message. !;
-       outputDataRow  ! Display repair status row. !;
-end
-
-@ --------------------------------------------------------------------
 
      
 @ The #exclude directive is not required for your classes.
