@@ -1,1 +1,227 @@
+^i"This is the design template to be used for assignment 2."
 
+@ --------------------------------------------------------
+
+class Simulation
+! Contains the main method for running the simulation. !
+uses
+	Shop with 1 label simulates		! Simulates the shop. !;
+end
+#exclude
+
+@ --------------------------------------------------------
+
+class Shop
+! Manages the shop. !
+uses
+	Mechanic with 1 to * label employs 	! Available mechanics. !;
+	Vehicle with 0 to * label repairs	! Vehicles that need repair. !;
+	Display with 1 label uses		! Displays the information. !;
+	Menu with 1 label displays		! Manages the menu. !;
+end
+services
+	simulate				! Runs the simulation. !;
+end
+#exclude
+
+@ --------------------------------------------------------
+
+class Mechanic
+! Contains the details for each mechanic. !
+#exclude
+services
+	name 		! Name of the mechanic. !;
+	id 		! The mechanic ID. !;
+	experience 	! The experience level of the mechanic. !;
+end
+#exclude
+
+@ --------------------------------------------------------
+
+class Vehicle
+! Contains information about specific types of vehicles. !
+services
+	company		! The company that manufactures the vehicle. !;
+	type		! The type of vehicle such as car or van. !;
+	model		! The model of the vehicle. !;
+	damage		! The type of damage. !;
+end
+#exclude
+
+@ --------------------------------------------------------
+
+class Display
+! Provides the functions needed for the display of information. !
+services
+	addJob				! Add a job. !;
+	outputStatusTable		! Output the status table. !;
+	outputSummary			! Output the summary. !;
+	outputIterationNumber		! Output the iteration number. !;
+	outputAddedToWaitingList	! Output the vehicle added to the waiting list message. !;
+	outputAssignedToMechanic	! Output the vehicle assigned to a mechanic message. !;
+	outputRepairedByMechanic	! Output the vehicle repaired by named mechanic message. !;
+end
+#exclude
+
+@ --------------------------------------------------------
+
+class Menu
+! Displays and manages the menu. !
+services
+	displayMenu		! Displays the menu. !;
+	getMenuSelection	! Gets the user's menu selection. !;
+end
+#exclude
+
+@ ******************** Add your design below. ********************
+class Shop
+! Represents the repair shop. !
+! Manages mechanics, vehicles, jobs, and waiting lists. !
+
+uses
+   Mechanic with 1 to * label employs ! Mechanics employed by the shop. !;
+   Vehicle with 0 to * label repairs ! Vehicles to be repaired. !;
+   Job with 0 to * label records ! Completed and active jobs. !;
+   Waitinglist with 1 label maintains ! Vehicles waiting for repair. !;
+   Display with 1 label uses ! Output information to the user. !;
+end 
+
+services
+     setup  ! Initialize mechanics and vehicles. !;
+     run    ! Run the application. !;
+     simulate ! Runs the simulation. !;
+     assignMechanic ! Assign a mechanic to a vehicle. !;
+     createJob  ! Creates a repair job. !;
+end
+
+@ ---------------------------------------------------------
+
+class Mechanic
+! Represents a mechanic employed by the shop !
+
+uses
+    Job with 0 * label performs  ! Repair work assigned to mechanic. !;
+end
+
+services 
+    name  ! Return mechanic name. !;
+    id    ! Return mechanic id.   !;
+    experience  ! Return experience level. !;
+    assignJob   ! Assign repair job.  !;
+    completeJob  ! Complete repair job.  !;
+end
+
+@ ----------------------------------------------------------
+
+class Vehicle
+!  Represents a vehicle that needs repairs.  !
+
+uses
+    Damage with 1 label damagedBy  ! Type of damage sustained.  !;
+end
+
+services
+        company  ! Return company name. !;
+        model    ! Return model name. !;
+        type     ! Return type of vehicle. !;
+        damage   ! Return damage type.     !;
+        calculateCost ! Calculate repair cost. !;
+        calculateTime ! Calculate repair time.  !;
+end
+
+@ -------------------------------------------------------------
+
+class Job
+! Represents a repair record. !
+
+uses 
+    Vehicle with 1 label repairs  ! Vehicle being repaired. !;
+    Mechanic with 1 label assigned ! Assigned mechanic. !;
+end
+
+services
+        calculateCost  ! Calculate total repair costs. !;
+        calculateTime  ! Calculate completion time. !;
+        generateRecord ! Create job record. !;
+        status  ! Return job status  !;
+end
+
+@ -------------------------------------------------------------
+
+class WaitingList
+! Stores vehicles waiting on an available mechanic. !
+
+uses
+    Vehicles with 0 to * label contains ! Waiting vehicles. !;
+end
+
+services
+        addVehicle ! Add vehicle to waiting list. !;
+        removeVehicle ! Remove vehicle from the waiting list. !;
+        nextVehicle  ! Get the next waiting vehicle. !;
+        count  ! Number of waiting vehicles. !;
+end
+
+@ ---------------------------------------------------------------
+
+class Damage
+! Base class describing vehicle damage. !
+
+services
+        repairCost  ! Return repair cost. !;
+        repairTime  ! Return repair time. !;
+end
+
+@ ---------------------------------------------------------------------
+
+class PotholeDamage
+! Damage caused by pothole. !
+
+inherits Damage;
+
+services
+       repairCost ! Cost for small, medium, or large potholes. !;
+       repairTime  ! Time needed for pothole repair. !;
+end
+
+@ ---------------------------------------------------------------------
+
+class CollisionDamage
+! Damage caused by vehicle collisions. !
+
+inherits Damage;
+
+services
+        repairCost ! Cost for bumper, roof, mirror, and door damage. !;
+        repairTime  ! Time needed for collision repair. !;
+end
+
+@ ------------------------------------------------------------------
+
+class WeatherDamage
+! Damage caused by the weather elements. !
+
+inherits Damage;
+
+services
+        repairCost  ! Cost for wind, flood, or fire damage. !;
+        repairTime  ! Adjust repair time using multiplier. !;
+end
+
+@ ----------------------------------------------------------------------
+
+class Display
+! Handles all user output. !
+
+services
+       outputIterationNumber ! Display simulation iteration. !;
+       outputAddedToWaitingList ! Display waiting list message. !;
+       outputAssignedToMechcanic ! Display assignment message. !;
+       outputRepairedByMechanic  ! Display completion message. !;
+       outputDataRow  ! Display repair status row. !;
+end
+
+@ --------------------------------------------------------------------
+
+     
+@ The #exclude directive is not required for your classes.
